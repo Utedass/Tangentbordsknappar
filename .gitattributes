@@ -1,1 +1,2 @@
 *.kicad_pro text eol=lf
+*.drawio text eol=lf
