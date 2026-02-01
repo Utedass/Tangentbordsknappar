@@ -3285,7 +3285,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u"
+		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB"
 			(at 256.54 231.14 0)
 			(effects
 				(font
@@ -3456,7 +3456,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u"
+		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB"
 			(at 241.3 220.98 0)
 			(effects
 				(font
@@ -3524,7 +3524,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u"
+		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB"
 			(at 241.3 210.82 0)
 			(effects
 				(font
@@ -3810,7 +3810,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
 			(at 360.68 33.02 0)
 			(effects
 				(font
@@ -4038,7 +4038,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u"
+		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB"
 			(at 256.54 220.98 0)
 			(effects
 				(font
@@ -4106,7 +4106,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u"
+		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB"
 			(at 271.78 231.14 0)
 			(effects
 				(font
@@ -4174,7 +4174,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u"
+		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB"
 			(at 271.78 220.98 0)
 			(effects
 				(font
@@ -4334,7 +4334,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u"
+		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB"
 			(at 256.54 210.82 0)
 			(effects
 				(font
@@ -4519,7 +4519,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
 			(at 360.68 25.4 0)
 			(effects
 				(font
@@ -4584,7 +4584,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u"
+		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB"
 			(at 241.3 231.14 0)
 			(effects
 				(font
@@ -4652,7 +4652,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u"
+		(property "Footprint" "PCM_Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB"
 			(at 271.78 210.82 0)
 			(effects
 				(font
