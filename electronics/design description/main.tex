@@ -1,0 +1,56 @@
+\documentclass[11px]{specification}
+
+% Input encoding and typographical rules for English language
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[english]{isodate}
+
+\usepackage{lipsum}
+
+% These define global texts that are used in headers and titles.
+\title{Button Balooney - Design Description}
+\author{Jonatan Gezelius}
+\date{Februari 2026}
+\revision{Revision 0.1}
+\companylogo{\Huge $\nabla$ Jegatron Electronics}
+
+
+
+\begin{document}
+
+\maketitle
+
+\section{First section}
+
+\lipsum[2]
+
+\begin{multicols}{2}
+
+\lipsum[2-3]
+
+\begin{colblock}
+\includegraphics[width=\linewidth]{system diagram}
+\captionof{figure}{Myn}
+\label{fig:systemDiagram}
+\end{colblock}
+
+And this is some short additional text after the figure. Maybe a little more.
+
+\end{multicols}
+
+\lipsum[4]
+
+\newpage
+\tableofcontents
+
+\newpage
+
+\section{Another section}
+
+\begin{figure}[b]
+\includegraphics[width=0.5\linewidth]{system diagram}
+\end{figure}
+
+\lipsum[6-8]
+
+\end{document}
