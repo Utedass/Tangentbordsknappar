@@ -1,3 +1,6 @@
+# Drawio backup files
+*.drawio.bkp
+
 # Created by https://www.toptal.com/developers/gitignore/api/kicad,freecad
 # Edit at https://www.toptal.com/developers/gitignore?templates=kicad,freecad
 
