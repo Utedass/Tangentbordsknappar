@@ -4,3 +4,5 @@ $pdf_mode = 1;
 $aux_dir = 'auxfiles';
 
 $bibtex_use = 2;
+
+$cleanup_mode=2

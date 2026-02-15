@@ -23,7 +23,7 @@
 %% document example.tex.
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{datasheet}[2020/11/13 LaTeX document class for datasheets]
+\ProvidesClass{specification}[2026/02/15 LaTeX document class for specifications]
 
 % The class is based on the article class.
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
@@ -80,7 +80,7 @@
 }
 
 \renewcommand{\maketitle}{
-  {\@companylogo}\\                    % Logo
+  {\Huge\@companylogo}\\                    % Logo
   \vspace{1cm}\\                       % Vertical spacing
   {\Huge\sffamily\bfseries\@title}\\   % Title
   \noindent\rule{\textwidth}{1pt}      % horizontal rule
@@ -97,7 +97,7 @@
     \renewcommand{\headrulewidth}{0pt}
     \renewcommand{\footrulewidth}{0.5pt}
     \fancyfoot[L]{\@revision}
-    \fancyfoot[C]{\@date}
+    \fancyfoot[C]{\@author}
     \fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
 }
 
@@ -105,11 +105,11 @@
 \fancypagestyle{normalpage}{
     \renewcommand{\headrulewidth}{0.5pt}
     \renewcommand{\footrulewidth}{0.5pt}
-    \fancyhead[L]{\@author}
+    \fancyhead[L]{\@companylogo}
     \fancyhead[C]{\slshape\@title}
-    \fancyhead[R]{\@date}
-    \fancyfoot[L]{\@revision}
-    \fancyfoot[C]{\@date}
+    \fancyhead[R]{\@revision}
+    \fancyfoot[L]{\@author}
+    \fancyfoot[C]{}
     \fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
 }
 
