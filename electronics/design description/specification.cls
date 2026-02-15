@@ -42,7 +42,7 @@
 \RequirePackage{threeparttable}
 
 % Align figure and table captions to left.
-\RequirePackage[font=bf, skip=5pt, justification=raggedright, format=hang, singlelinecheck=off]{caption}
+\RequirePackage[font=bf, skip=5pt, justification=centering, format=hang, singlelinecheck=off]{caption}
 
 % Format hyperlinks as blue and set PDF title based on \title{} in the document.
 \RequirePackage[pdfusetitle]{hyperref}

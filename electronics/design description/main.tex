@@ -33,13 +33,18 @@
 
 
 \begin{multicols}{2}
+
+\begin{colblock}
+\includegraphics[width=0.8\linewidth]{BBB-photo}
+\captionof{figure}{First iteration of BBB}
+\label{fig:systemDiagram}
+\end{colblock}
+
 The BBB is a multipurpose user programmable input device and also serves as an exercise product to hone my skills and try out different circuit solutions. Not all features and component make sense from a real product perspective, but serves as a learning experience.
 
 It all started with the desire to have a more professional feel to my hobby and learning projects. So instead of using the classical tactile buttons forced down into a breadboard entangled in jumper wires, I bought some random mechanical keyboard switches and 3d-printed an enclosure for them. Then came the time to make the circuit board to empower this.
 
 Feature creep. That is the spirit of this project. Because of personal projects I need the BBB need to be Zigbee enabled and preferably also wifi capable. Since I had already used the ESP32-C6 for such purposes I decided to use this.
-
-The hardware architecture can be seen in figure \ref{fig:system-overview}.
 
 \section{Features}
 
@@ -51,14 +56,7 @@ The hardware architecture can be seen in figure \ref{fig:system-overview}.
 \item{LED lights}
 \end{itemize}
 
-\end{multicols}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\linewidth]{system diagram}
-\caption{The hardware architecture of the BBB}
-\label{fig:system-overview}
-\end{figure}
 
 
 \newpage
@@ -66,18 +64,64 @@ The hardware architecture can be seen in figure \ref{fig:system-overview}.
 
 \newpage
 
-\begin{multicols}{2}
 
 
 \section{Hardware design}
 
-\subsection{Charger Circuit}
+The hardware architecture can be seen in figure \ref{fig:system-overview}. The design can definitely be made more simple and cheap, but that is not the purpose of this project. However, several of the parts can be skipped if not desired.
 
-%\begin{colblock}
-%\includegraphics[width=\linewidth]{system diagram}
-%\captionof{figure}{Myn}
-%\label{fig:systemDiagram}
-%\end{colblock}
+\subsection{Desired features}
+
+\begin{itemize}
+\item{Zigbee}
+\item{Wifi}
+\item{Battery powered long life}
+\item{USB-C powered / charged}
+\item{LED lights}
+\end{itemize}
+
+\subsection{Optional Subsystems}
+
+The following parts can be not-mounted or replaced with something else:
+\begin{itemize}
+\item{USB-C Sink controller: Can be replaced by resistors.}
+\item{Fuel Gauge: Can be removed and the battery power can be bridged directly to the charger}
+\item{LiPo Charger + LiPo battery: Can be removed. System power directly bridged from VBUS.}
+\item{Boost regulator + LED Matrix: Can be skipped}
+\item{Miniature speaker: Can be skipped}
+\item{Flash: Can be avoided if using ESP32-C6FH4 or ESP32-C6FH8 instead}
+\end{itemize}
+
+\end{multicols}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth]{system-diagram}
+\caption{The hardware architecture of the BBB}
+\label{fig:system-overview}
+\end{figure}
+
+\newpage
+
+\begin{multicols}{2}
+
+
+\subsection{Charger Circuit -- MP2667}
+
+\subsection{USB-C Sink Controller -- FUSB303B}
+
+\subsection{Fuel Gauge -- BQ27427}
+
+\subsection{3V3 Buck-Boost Regulator -- TPS63900}
+
+\subsection{5V Boost Regulator -- TPS61092}
+
+\subsection{LED -- WS2812}
+
+\subsection{MCU -- ESP32-C6}
+
+
+
 
 
 \end{multicols}
