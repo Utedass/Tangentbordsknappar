@@ -49,6 +49,7 @@ out/
 
 ### LaTeX ###
 ## Core latex/pdflatex auxiliary files:
+auxfiles
 *.aux
 *.lof
 *.log

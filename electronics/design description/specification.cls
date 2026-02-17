@@ -41,22 +41,36 @@
 \RequirePackage{tabularx}
 \RequirePackage{threeparttable}
 
+% Allows nice unit usage
+\RequirePackage{siunitx}
+\sisetup{range-units = single}
+\AtBeginDocument{\DeclareSIUnit{\mAh}{mAh}}
+
 % Align figure and table captions to left.
-\RequirePackage[font=bf, skip=5pt, justification=centering, format=hang, singlelinecheck=off]{caption}
+\RequirePackage[font=small, labelfont=bf, skip=5pt, justification=centering, format=hang, singlelinecheck=off]{caption}
 
 % Format hyperlinks as blue and set PDF title based on \title{} in the document.
 \RequirePackage[pdfusetitle]{hyperref}
 \hypersetup{
-    pdftex,
-    breaklinks=true,
-    colorlinks=true,
-    linkcolor=.,
-    urlcolor=blue
+  pdftex,
+  breaklinks=true,
+  colorlinks=true,
+  linkcolor=.,
+  urlcolor=blue
 }
 
 % Configure page margins
 \RequirePackage{geometry}
 \geometry{left=2cm, top=2cm, right=2cm, bottom=3cm}
+
+% Configure reference formatting and settings
+\RequirePackage[
+  backend=biber,
+  style=numeric,
+  sorting=none
+]{biblatex}
+
+\addbibresource{references.bib}
 
 % Command \companylogo{} can be used in document to specify a logo for the first page.
 \gdef\@companylogo{}
@@ -68,49 +82,49 @@
 
 % First page title layout is defined here
 \renewcommand{\maketitle}{%
-    \twocolumn[%
-        {\@companylogo}\\
-        \vspace{1cm}\\
-        {\Huge\sffamily\bfseries\@title}\\
-        \noindent\rule{\textwidth}{1pt}
-        \medskip
-        ]%
-        \pagestyle{normalpage}
-        \thispagestyle{firstpage}
+\twocolumn[%
+{\@companylogo}\\
+\vspace{1cm}\\
+{\Huge\sffamily\bfseries\@title}\\
+\noindent\rule{\textwidth}{1pt}
+\medskip
+]%
+\pagestyle{normalpage}
+\thispagestyle{firstpage}
 }
 
 \renewcommand{\maketitle}{
-  {\Huge\@companylogo}\\                    % Logo
-  \vspace{1cm}\\                       % Vertical spacing
-  {\Huge\sffamily\bfseries\@title}\\   % Title
-  \noindent\rule{\textwidth}{1pt}      % horizontal rule
-  \medskip
-  \pagestyle{normalpage}
-  \thispagestyle{firstpage}
+{\Huge\@companylogo}\\                    % Logo
+\vspace{1cm}\\                       % Vertical spacing
+{\Huge\sffamily\bfseries\@title}\\   % Title
+\noindent\rule{\textwidth}{1pt}      % horizontal rule
+\medskip
+\pagestyle{normalpage}
+\thispagestyle{firstpage}
 }
 
 % First page has footer but no header
 \RequirePackage{fancyhdr}
 \RequirePackage{lastpage}
 \fancypagestyle{firstpage}{
-    \fancyhf{}
-    \renewcommand{\headrulewidth}{0pt}
-    \renewcommand{\footrulewidth}{0.5pt}
-    \fancyfoot[L]{\@revision}
-    \fancyfoot[C]{\@author}
-    \fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0.5pt}
+  \fancyfoot[L]{\@revision}
+  \fancyfoot[C]{\@author}
+  \fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
 }
 
 % Rest of the pages have both header and footer
 \fancypagestyle{normalpage}{
-    \renewcommand{\headrulewidth}{0.5pt}
-    \renewcommand{\footrulewidth}{0.5pt}
-    \fancyhead[L]{\@companylogo}
-    \fancyhead[C]{\slshape\@title}
-    \fancyhead[R]{\@revision}
-    \fancyfoot[L]{\@author}
-    \fancyfoot[C]{}
-    \fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
+  \renewcommand{\headrulewidth}{0.5pt}
+  \renewcommand{\footrulewidth}{0.5pt}
+  \fancyhead[L]{\@companylogo}
+  \fancyhead[C]{\slshape\@title}
+  \fancyhead[R]{\@revision}
+  \fancyfoot[L]{\@author}
+  \fancyfoot[C]{}
+  \fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
 }
 
 % No line above footnotes
@@ -118,9 +132,9 @@
 
 % Section header size and spacing
 \renewcommand{\section}{%
-    \@startsection
-    {section}{1}{0pt}{-3.5ex plus -2ex minus -1ex}%
-    {2.5ex plus .5ex}{\Large\bfseries\sffamily}%
+  \@startsection
+  {section}{1}{0pt}{-3.5ex plus -2ex minus -1ex}%
+  {2.5ex plus .5ex}{\Large\bfseries\sffamily}%
 }
 
 % Tell LaTeX to look in "figures/" relative to the main document
@@ -149,16 +163,16 @@
 %   \begin{colblock}[figure] ... \caption{My caption} \label{...} \end{colblock}
 %   \begin{colblock}[table] ... \caption{My caption} \label{...} \end{colblock}
 \newenvironment{colblock}[1][figure] % optional arg defaults to "figure"
-  {%
-    \par\medskip%
-    \noindent%
-    \minipage{\linewidth}%
-    \centering%
-    \def\colblocktype{#1} % store type
-    % redefine \caption inside this block to automatically use \captionof
-    %\renewcommand{\caption}[1]{\captionof{\colblocktype}{##1}}%
-  }
-  {%
-    \endminipage %
-    \par\medskip %
-  }
+{%
+  \par\medskip%
+  \noindent%
+  \minipage{\linewidth}%
+  \centering%
+  \def\colblocktype{#1} % store type
+  % redefine \caption inside this block to automatically use \captionof
+  %\renewcommand{\caption}[1]{\captionof{\colblocktype}{##1}}%
+}
+{%
+  \endminipage %
+  \par\medskip %
+}

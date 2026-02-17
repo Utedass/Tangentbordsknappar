@@ -29,18 +29,20 @@
 
 \maketitle
 
-\section{Overview}
+\section{Background}
 
 
 \begin{multicols}{2}
 
 \begin{colblock}
-\includegraphics[width=0.8\linewidth]{BBB-photo}
-\captionof{figure}{First iteration of BBB}
-\label{fig:systemDiagram}
+    \includegraphics[width=0.8\linewidth]{BBB-photo}
+    \captionof{figure}{First iteration of BBB}
+    \label{fig:systemDiagram}
 \end{colblock}
 
 The BBB is a multipurpose user programmable input device and also serves as an exercise product to hone my skills and try out different circuit solutions. Not all features and component make sense from a real product perspective, but serves as a learning experience.
+
+
 
 It all started with the desire to have a more professional feel to my hobby and learning projects. So instead of using the classical tactile buttons forced down into a breadboard entangled in jumper wires, I bought some random mechanical keyboard switches and 3d-printed an enclosure for them. Then came the time to make the circuit board to empower this.
 
@@ -49,22 +51,17 @@ Feature creep. That is the spirit of this project. Because of personal projects 
 \section{Features}
 
 \begin{itemize}
-\item{Nine user programmable buttons}
-\item{ESP32-C6 - Zigbee, Wifi, BLE etc}
-\item{LiPo charger with Power Path}
-\item{USB-C sink IC}
-\item{LED lights}
+    \item{Nine user programmable buttons}
+    \item{ESP32-C6 - Zigbee, Wifi, BLE etc}
+    \item{LiPo charger with Power Path}
+    \item{USB-C sink IC}
+    \item{LED lights}
 \end{itemize}
-
-
-
 
 \newpage
 \tableofcontents
 
 \newpage
-
-
 
 \section{Hardware design}
 
@@ -73,44 +70,80 @@ The hardware architecture can be seen in figure \ref{fig:system-overview}. The d
 \subsection{Desired features}
 
 \begin{itemize}
-\item{Zigbee}
-\item{Wifi}
-\item{Battery powered long life}
-\item{USB-C powered / charged}
-\item{LED lights}
+    \item{Zigbee}
+    \item{Wifi}
+    \item{Battery powered long life}
+    \item{USB-C powered / charged}
+    \item{LED lights}
 \end{itemize}
 
 \subsection{Optional Subsystems}
 
 The following parts can be not-mounted or replaced with something else:
 \begin{itemize}
-\item{USB-C Sink controller: Can be replaced by resistors.}
-\item{Fuel Gauge: Can be removed and the battery power can be bridged directly to the charger}
-\item{LiPo Charger + LiPo battery: Can be removed. System power directly bridged from VBUS.}
-\item{Boost regulator + LED Matrix: Can be skipped}
-\item{Miniature speaker: Can be skipped}
-\item{Flash: Can be avoided if using ESP32-C6FH4 or ESP32-C6FH8 instead}
+    \item{USB-C Sink controller: Can be replaced by resistors.}
+    \item{Fuel Gauge: Can be removed and the battery power can be bridged directly to the charger}
+    \item{LiPo Charger + LiPo battery: Can be removed. System power directly bridged from VBUS.}
+    \item{Boost regulator + LED Matrix: Can be skipped}
+    \item{Miniature speaker: Can be skipped}
+    \item{Flash: Can be avoided if using ESP32-C6FH4 or ESP32-C6FH8 instead}
 \end{itemize}
 
 \end{multicols}
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=1\linewidth]{system-diagram}
-\caption{The hardware architecture of the BBB}
-\label{fig:system-overview}
+    \centering
+    \includegraphics[width=1\linewidth]{system-diagram}
+    \caption{The hardware architecture of the BBB}
+    \label{fig:system-overview}
 \end{figure}
 
 \newpage
 
 \begin{multicols}{2}
 
+\subsection{Power requirements}
 
-\subsection{Charger Circuit -- MP2667}
+Before any parts of the circuit can be properly designed, we need to determine the power and current requirements throughout the system.
+
+The maximum peak current consumption of the ESP32-C6 is during WiFi transmission, which can be up to \qty{354}{\milli\ampere} at \qty{3.3}{\volt} which is about \qty{1.2}{\watt} \cite[66]{esp32-c6-datasheet}. The average power consumption will be much lower than this, but we need to design the power system to be able to handle this peak.
+
+Each WS2812 2020 LED consumes about $3 \times \qty{12}{\milli\ampere} \approx \qty{40}{\milli\ampere}$ at full brightness. Which for the full matrix of 9 LEDs would be about \qty{360}{\milli\ampere}, which at \qty{5}{\volt} would be \qty{1.8}{\watt} \cite{ws2812-product-page}.
+
+A speaker such as \url{https://www.electrokit.com/en/miniatyrhogtalare-8ohm-1w-11x15mm} driven with a MAX98357A class D amplifier can consume up to \qty{1}{\watt} at \qty{5}{\volt}, which is about \qty{200}{\milli\ampere}. It is possible to run it directly from $V_{SYS}$ from the battery but it cannot output the full power. And the \qty{5}{\volt} boost regulator should be able to handle \qty{1.5}{\ampere} when fed with \qty{3.6}{\volt} from the battery.
+
+\end{multicols}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|r|r|r|}
+        \hline
+        \textbf{Subsystem}     & \textbf{Voltage} & \textbf{Peak Current}    & \textbf{Peak Power}       \\
+        \hline
+        ESP32-C6 (WiFi TX)     & \qty{3.3}{\volt} & \qty{354}{\milli\ampere} & \qty{1.2}{\watt}          \\
+        LED Matrix (9x WS2812) & \qty{5}{\volt}   & \qty{360}{\milli\ampere} & \qty{1.8}{\watt}          \\
+        Speaker (MAX98357A)    & \qty{5}{\volt}   & \qty{200}{\milli\ampere} & \qty{1.0}{\watt}          \\
+        \hline
+        \textbf{Total}         &                  &                          & \textbf{\qty{4.0}{\watt}} \\
+        \hline
+    \end{tabular}
+    \caption{Peak current and power consumption summary}
+    \label{tab:power-summary}
+\end{table}
+
+\begin{multicols}{2}
+
+A \qty{500}{\mAh} battery might fit into the enclosure, and with an allowed discharge current of \qty{2}{C} it will only be able to provide max \qty{3.6}{\watt}. So not all things will be able to run at full power at the same time, but that is not a requirement for this project.
+
+
+\subsection{Charger Circuit -- BQ25601}
+Other candidates were MP2667, which has better quiescent current but no OTG and BQ25895 but it has D+/D- pins which I require for other purposes.
 
 \subsection{USB-C Sink Controller -- FUSB303B}
 
-\subsection{Fuel Gauge -- BQ27427}
+\subsection{Fuel Gauge -- BQ27441-G1}
+Another option might have been BQ27427, but it is bga.
+
 
 \subsection{3V3 Buck-Boost Regulator -- TPS63900}
 
@@ -118,13 +151,18 @@ The following parts can be not-mounted or replaced with something else:
 
 \subsection{LED -- WS2812}
 
+\subsection{Speaker amplifier -- MAX98357A}
+
 \subsection{MCU -- ESP32-C6}
 
+\subsubsection{Flash -- W25Q64JV}
+The QSPI pin mapping to the ESP32 is described in the datasheet \cite[32]{esp32-c6-datasheet}.
 
-
+Datasheet \cite{w25q64jv-datasheet}
 
 
 \end{multicols}
 
+\printbibliography
 
 \end{document}

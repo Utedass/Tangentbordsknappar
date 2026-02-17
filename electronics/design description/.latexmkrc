@@ -5,4 +5,4 @@ $aux_dir = 'auxfiles';
 
 $bibtex_use = 2;
 
-$cleanup_mode=2
+# $cleanup_mode=2
