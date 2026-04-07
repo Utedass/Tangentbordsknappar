@@ -182,14 +182,24 @@
 %  \designproblem{How should we handle SDRAM refresh timing?}
 %  \designproblem{How should we handle SDRAM refresh timing?}[Use auto-refresh every 7.8 µs]
 \usepackage{xparse}
+\usepackage{tcolorbox}
+
 \NewDocumentCommand{\designproblem}{m o}{%
-  \par\medskip
-  \noindent
-  % Problem (arg1)
-  {\bfseries\color{blue!70!black}#1\par}
-  % Decision (arg2 optional)
-  \IfValueTF{#2}
-  {{\color{green!50!black}Decision: #2\par}}
-  {{\bfseries\color{red}PENDING\par}}
-  \medskip
+  \begin{tcolorbox}[
+      colback=gray!5,
+      colframe=black!60,
+      boxrule=0.8pt,
+      arc=2mm,
+      left=2mm, right=2mm, top=1mm, bottom=1mm
+    ]
+    % Problem
+    {\bfseries\color{blue!70!black}#1\par}
+
+    \medskip
+
+    % Decision
+    \IfValueTF{#2}
+    {{\color{green!50!black}Decision: #2}}
+    {{\bfseries\color{red}PENDING}}
+  \end{tcolorbox}
 }
