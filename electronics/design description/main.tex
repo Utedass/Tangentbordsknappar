@@ -110,7 +110,7 @@ The maximum peak current consumption of the ESP32-C6 is during WiFi transmission
 
 Each WS2812 2020 LED consumes about $3 \times \qty{12}{\milli\ampere} \approx \qty{40}{\milli\ampere}$ at full brightness. Which for the full matrix of 9 LEDs would be about \qty{360}{\milli\ampere}, which at \qty{5}{\volt} would be \qty{1.8}{\watt} \cite{ws2812-product-page}.
 
-A speaker such as \url{https://www.electrokit.com/en/miniatyrhogtalare-8ohm-1w-11x15mm} driven with a MAX98357A class D amplifier can consume up to \qty{1}{\watt} at \qty{5}{\volt}, which is about \qty{200}{\milli\ampere}. It is possible to run it directly from $V_{SYS}$ from the battery but it cannot output the full power. And the \qty{5}{\volt} boost regulator should be able to handle \qty{1.5}{\ampere} when fed with \qty{3.6}{\volt} from the battery.
+A speaker such as \url{https://www.electrokit.com/en/miniatyrhogtalare-8ohm-1w-11x15mm} driven with a MAX98357A class D amplifier can consume up to \qty{1}{\watt} at \qty{5}{\volt}, which is about \qty{200}{\milli\ampere}. It is possible to run it directly from $V_{SYS}$ from the battery but it cannot output the full power. And since the \qty{5}{\volt} boost regulator will be able to handle \qty{1.5}{\ampere} when fed with \qty{3.6}{\volt} from the battery I decide to put it on the \qty{5}{\volt} rail.
 
 \end{multicols}
 
@@ -138,6 +138,8 @@ A \qty{500}{\mAh} battery might fit into the enclosure, and with an allowed disc
 
 \subsection{Charger Circuit -- BQ25601}
 Other candidates were MP2667, which has better quiescent current but no OTG and BQ25895 but it has D+/D- pins which I require for other purposes.
+
+\designproblem{Should I make use of the shipping mode for the battery?}
 
 \subsection{USB-C Sink Controller -- FUSB303B}
 
