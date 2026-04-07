@@ -63,7 +63,6 @@
 % Format hyperlinks as blue and set PDF title based on \title{} in the document.
 \RequirePackage[pdfusetitle]{hyperref}
 \hypersetup{
-  pdftex,
   breaklinks=true,
   colorlinks=true,
   linkcolor=.,
