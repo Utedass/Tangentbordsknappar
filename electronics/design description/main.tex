@@ -63,6 +63,26 @@ Feature creep. That is the spirit of this project. Because of personal projects 
 
 \newpage
 
+\section{This document}
+This document serves several purposes.
+\begin{itemize}
+    \item Description document when the design is done
+    \item Working out the design
+    \item Pointing out important design decisions
+    \item Pointing out non-important design decisions
+    \item Recognizing requirements
+\end{itemize}
+
+Design problems and decisions are written in a rounded rectangle.
+\designproblem{How should I describe the design problems to the reader?}[By example!]
+
+And recognized requirements are written in a sharp cornered rectangle.
+\requirement*{The Design Description shall explain the usage of requirements in the document.}
+
+These are summarized in the end of the document with the intent of being an input for external requirement management.
+
+\newpage
+
 \section{Hardware design}
 
 The hardware architecture can be seen in figure \ref{fig:system-overview}. The design can definitely be made more simple and cheap, but that is not the purpose of this project. However, several of the parts can be skipped if not desired.
@@ -138,6 +158,7 @@ A \qty{500}{\mAh} battery might fit into the enclosure, and with an allowed disc
 
 \subsection{Charger Circuit -- BQ25601}
 Other candidates were MP2667, which has better quiescent current but no OTG and BQ25895 but it has D+/D- pins which I require for other purposes.
+\requirement{The battery charger shall be optional}
 
 \designproblem{Should I make use of the shipping mode for the battery?}
 
@@ -163,7 +184,7 @@ The QSPI pin mapping to the ESP32 is described in the datasheet \cite[32]{esp32-
 Datasheet \cite{w25q64jv-datasheet}
 
 \subsection{Layout considerations}
-
+In the following sections most layout related decisions will be clarified.
 \subsubsection{Board outline}
 \subsubsection{Mounting features}
 \subsubsection{Keep outs}
@@ -171,10 +192,19 @@ Datasheet \cite{w25q64jv-datasheet}
 \subsubsection{Switches}
 \subsubsection{LEDs}
 \subsubsection{Test points}
+\subsubsection{Jumpers and options}
+\begin{itemize}
+    \item Option of having no charger circuitry
+    \item Option of having no USB-C Sink controller
+    \item Option of having no fuel gauge
+    \item Optional jumper inline with power for measuring quiescent currents
+\end{itemize}
 \subsubsection{Overlay information}
 
 
 \end{multicols}
+
+\printindex[req]
 
 \printbibliography
 

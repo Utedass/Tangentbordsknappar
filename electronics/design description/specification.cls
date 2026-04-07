@@ -30,6 +30,10 @@
 \ProcessOptions\relax
 \LoadClass{article}
 
+% Avoid hyphenation
+\hyphenpenalty=10000
+\tolerance=10000
+
 % TODO: Maybe remove these requires, if they are more related to content
 % Useful symbol and color definitions
 \RequirePackage{gensymb}
@@ -209,4 +213,23 @@
     {{\color{green!50!black}Decision: #2}}
     {{\bfseries\color{red}PENDING}}
   \end{tcolorbox}
+}
+
+
+% Command \requirement
+% For declaring requirements with possible summary list
+% Example usage:
+%  \requirement{The battery charger shall be optional}
+%  \printindex[req]
+\usepackage{imakeidx}
+\makeindex[name=req,title=Requirements]
+
+\NewDocumentCommand{\requirement}{s m}{%
+  \par\noindent
+  \fbox{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+      \textbf{Requirement:} #2
+    }%
+  }%
+  \IfBooleanF{#1}{\index[req]{#2}}%
 }
