@@ -35,6 +35,13 @@
 \RequirePackage{gensymb}
 \RequirePackage{xcolor}
 
+% Nice to have package
+% Example usage:
+%   \todo{Remember to bring out the garbage}
+\RequirePackage{todonotes}
+\RequirePackage{marginnote}
+\let\marginpar\marginnote
+
 % TODO: Maybe remove these requires, if they are more related to content
 % These packages allow full-width tables and combining cells in tables.
 \RequirePackage{multirow}
