@@ -162,7 +162,7 @@
 \newcommand{\thickhline}{\noalign {\ifnum 0=`}\fi \hrule height 1pt \futurelet \reserved@a \@xhline}
 
 % No numbering for section titles
-\setcounter{secnumdepth}{0}
+\setcounter{secnumdepth}{2}
 
 % Prepare the use of multicol
 \RequirePackage{multicol}
@@ -187,14 +187,14 @@
   \par\medskip %
 }
 
-% Command \designproblem
+% Command \decision
 % Example usage:
-%  \designproblem{How should we handle SDRAM refresh timing?}
-%  \designproblem{How should we handle SDRAM refresh timing?}[Use auto-refresh every 7.8 µs]
+%  \decision{How should we handle SDRAM refresh timing?}
+%  \decision{How should we handle SDRAM refresh timing?}[Use auto-refresh every 7.8 µs]
 \usepackage{xparse}
 \usepackage{tcolorbox}
 
-\NewDocumentCommand{\designproblem}{m o}{%
+\NewDocumentCommand{\decision}{m o}{%
   \begin{tcolorbox}[
       colback=gray!5,
       colframe=black!60,
@@ -221,7 +221,7 @@
 %  \requirement{The battery charger shall be optional}
 %  \printindex[req]
 \usepackage{imakeidx}
-\makeindex[name=req,title=Requirements]
+\makeindex[name=req,title=Requirements, intoc]
 
 \NewDocumentCommand{\requirement}{s m}{%
   \par\noindent
@@ -232,3 +232,13 @@
   }%
   \IfBooleanF{#1}{\index[req]{#2}}%
 }
+
+
+% Command \sig
+% For printing datasheet signals, pin names, register names etc
+% Example usage:
+%  \sig{VBUS\_\sigsub{MAX}}
+\usepackage{mfirstuc}
+
+\newcommand{\sig}[1]{\texttt{#1}}
+\newcommand{\sigsub}[1]{\texttt{\textsubscript{#1}}}

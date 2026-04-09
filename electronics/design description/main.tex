@@ -74,7 +74,7 @@ This document serves several purposes.
 \end{itemize}
 
 Design problems and decisions are written in a rounded rectangle.
-\designproblem{How should I describe the design problems to the reader?}[By example!]
+\decision{How should I describe the design problems to the reader?}[By example!]
 
 And recognized requirements are written in a sharp cornered rectangle.
 \requirement*{The Design Description shall explain the usage of requirements in the document.}
@@ -155,39 +155,79 @@ A speaker such as \url{https://www.electrokit.com/en/miniatyrhogtalare-8ohm-1w-1
 
 A \qty{500}{\mAh} battery might fit into the enclosure, and with an allowed discharge current of \qty{2}{C} it will only be able to provide max \qty{3.6}{\watt}. So not all things will be able to run at full power at the same time, but that is not a requirement for this project.
 
+\subsection{Battery}
+The thickness of the current compartment left for a battery is at most \qty{5}{\milli\meter}. The area depends on wether the PCB will be fastened by screws or not. If screws are used, then only a maximum of \qtyproduct{35 x 35}{\milli\meter} is available for a battery.
 
-\subsection{Charger Circuit -- BQ25601}
+\decision{What battery to use?}[Go with the \qty{400}{mAh} battery from electrokit for now: \url{https://www.electrokit.com/batteri-lipo-3.7v-400mah}]
+
+I should probably redesign the enclosure to allow for a bigger battery. It might be difficult to fit this with connectors and all.
+
+\subsection{Charger Circuit}
+BQ25601
+
 Other candidates were MP2667, which has better quiescent current but no OTG and BQ25895 but it has D+/D- pins which I require for other purposes.
 \requirement{The battery charger shall be optional}
 
-\designproblem{Should I make use of the shipping mode for the battery?}
+\decision{Should I make use of the shipping mode for the battery?}
 
-\subsection{USB-C Sink Controller -- FUSB303B}
+\subsubsection{Important features}
+As soon as the input voltage or battery voltage is high enough, the device will power up. At power up, the Input Current Limit is updated to reflect the \sig{PSEL} pin (\qty{500}{\milli\ampere} or \qty{2.4}{\ampere}). When this is done, the system output \sig{} is soft-started and the switch converter for the battery charging is enabled.
 
-\subsection{Fuel Gauge -- BQ27441-G1}
+If nothing is done, the device will automatically enter Default Mode which means it will autonomously act as a battery charger and charge the battery. To exit this mode, the host must write a 1 to the \sig{WD\_RST} but. Then the device enters Host Mode until the watchdog timer times out and \sig{WATCHDOG\_FAULT} is set and the device returns to Default Mode.
+
+The default fast charging current \sig{ICHG} is \qty{2040}{\milli\ampere} which is way too much for the chosen battery. Setting the Input Current Limit \sig{IINDPM} using the pin \sig{PSEL} high limits this to \qty{500}{\milli\ampere}. This might still be too much since the proposed battery allows a maximum charging current of \qty{400}{\milli\ampere} and the step-down converter will allow a higher charging current than input current.
+
+\decision{Will the charger have to be disabled somehow at startup, and later enabled by the host, to prevent over current to the battery? Can be handled via the $\bar{CE}$ pin.}
+
+\decision{Will some sort of startup delay or under-voltage-lock-out be needed for the subsequent circuits so that the soft-start can work properly?}
+
+The device can operate in boost-mode to convert the battery voltage to \qty{5}{\volt} and max \qty{1.2}{\ampere} for OTG use. This is controlled via I2C.
+
+
+
+\subsection{USB-C Sink Controller}
+FUSB303B
+
+\subsection{Fuel Gauge}
+BQ27441-G1
+
 Another option might have been BQ27427, but it is bga.
 
 
-\subsection{3V3 Buck-Boost Regulator -- TPS63900}
+\subsection{3V3 Buck-Boost Regulator}
+TPS63900
 
-\subsection{5V Boost Regulator -- TPS61092}
+\subsection{5V Boost Regulator}
+TPS61092
 
-\subsection{LED -- WS2812}
+\subsection{LED}
+WS2812
 
-\subsection{Speaker amplifier -- MAX98357A}
+\subsection{Speaker amplifier}
+MAX98357A
 
-\subsection{MCU -- ESP32-C6}
+\subsection{MCU}
+ESP32-C6
 
-\subsubsection{Flash -- W25Q64JV}
+\subsubsection{Flash}
+W25Q64JV
+
 The QSPI pin mapping to the ESP32 is described in the datasheet \cite[32]{esp32-c6-datasheet}.
 
 Datasheet \cite{w25q64jv-datasheet}
+
+\subsubsection{Antenna}
+PCB Antenna, see \autoref{sec:PCB-Antenna}.
+
 
 \subsection{Layout considerations}
 In the following sections most layout related decisions will be clarified.
 \subsubsection{Board outline}
 \subsubsection{Mounting features}
 \subsubsection{Keep outs}
+\subsubsection{PCB Antenna}
+\label{sec:PCB-Antenna}
+Inverted-F antenna, perhaps according to \url{https://www.ti.com/lit/an/swru120d/swru120d.pdf?ts=1775731789186}.
 \subsubsection{Connectors}
 \subsubsection{Switches}
 \subsubsection{LEDs}
@@ -206,6 +246,6 @@ In the following sections most layout related decisions will be clarified.
 
 \printindex[req]
 
-\printbibliography
+\printbibliography[heading=bibintoc]
 
 \end{document}
