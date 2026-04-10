@@ -8,6 +8,7 @@
 \usepackage{float}
 
 \usepackage{lipsum}
+\usepackage{amsmath}
 
 \usepackage{fontspec}
 \usepackage{newunicodechar}
@@ -162,6 +163,21 @@ The thickness of the current compartment left for a battery is at most \qty{5}{\
 
 I should probably redesign the enclosure to allow for a bigger battery. It might be difficult to fit this with connectors and all.
 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|r|}
+        \hline
+        \textbf{Property}            & \textbf{Value}           \\
+        \hline
+        Recommended Charging Current & \qty{80}{\milli\ampere}  \\
+        Maximum Charging Current     & \qty{400}{\milli\ampere} \\
+        Maximum Discharge Current    & \qty{800}{\milli\ampere} \\
+        \hline
+    \end{tabular}
+    \caption{Battery specifications}
+    \label{tab:battery-specs}
+\end{table}
+
 \subsection{Charger Circuit}
 BQ25601
 
@@ -177,13 +193,59 @@ If nothing is done, the device will automatically enter Default Mode which means
 
 The default fast charging current \sig{ICHG} is \qty{2040}{\milli\ampere} which is way too much for the chosen battery. Setting the Input Current Limit \sig{IINDPM} using the pin \sig{PSEL} high limits this to \qty{500}{\milli\ampere}. This might still be too much since the proposed battery allows a maximum charging current of \qty{400}{\milli\ampere} and the step-down converter will allow a higher charging current than input current.
 
-\decision{Will the charger have to be disabled somehow at startup, and later enabled by the host, to prevent over current to the battery? Can be handled via the $\bar{CE}$ pin.}
+\decision{Will the charger have to be disabled somehow at startup, and later enabled by the host, to prevent over current to the battery? Can be handled via the $\bar{CE}$ pin.}[Yes, the current is way too large for this battery, the $\bar{CE}$ pin must be pulled up to prevent automatic charging.]
 
 \decision{Will some sort of startup delay or under-voltage-lock-out be needed for the subsequent circuits so that the soft-start can work properly?}
 
 The device can operate in boost-mode to convert the battery voltage to \qty{5}{\volt} and max \qty{1.2}{\ampere} for OTG use. This is controlled via I2C.
 
+\requirement{There shall be a green LED controlled by the Power Good signal}
 
+\requirement{There shall be a red LED controlled by the  signal}
+
+\end{multicols}
+
+\subsubsection{Typical application}
+The typical application is shown in \ref{fig:bq25601-typical-application}.
+
+There are three explained design procedures for determining the Inductor, the input Capacitor and the output Capacitor respectively.
+
+$I_{SAT} \ge I_{CHG} + \frac{1}{2} I_{RIPPLE}$
+
+$D = \frac{V_{BAT}}{V_{VBUS}}$
+
+\begin{equation}
+    I_{RIPPLE} = \frac{V_{IN} \times D \times (1-D)}{f_s \times L} \iff L = \frac{V_{IN} \times D \times (1-D)}{f_S \times I_{RIPPLE}}
+\end{equation}
+
+The inductors saturation current must be larger than the maximum charge current plus half the ripple current. The larger the inductance, the lower the ripple current. All of the parameters except the inductance and ripple current is known. According to you neighbouring LLM the ripple current should be \qtyrange{25}{30}{\percent} of the maximum load current, so about \qty{100}{\milli\ampere}. Lets see where that lands us.
+
+\begin{equation}
+    D = \qty{3.2}{\volt} / \qty{5}{\volt} = 0.64
+\end{equation}
+\begin{equation}
+    L = \frac{\qty{5}{\volt} \times 0.64 \times (1 - 0.64)}{\qty{1.5}{\mega\hertz} \times \qty{0.1}{\ampere}} =
+    \frac{\qty{1.152}{\volt}}{\qty{0.15}{\mega\hertz\ampere}} = \qty{7.68}{\micro\henry} \approx
+    \qty{6.8}{\micro\henry}
+\end{equation}
+
+The saturation current must be greater than $\qty{400}{\milli\ampere} + \qty{50}{\milli\ampere} = \qty{450}{\milli\ampere}$. The self resonance should be greater than $10 \times f_S$ the switching frequency, so more than \qty{15}{\mega\hertz}. For example the WIP322512A-6R8MLDG from INPAQ Technology Co., Ltd that comes in a standard 1210 package and has many second source alternatives.
+
+The input capacitor should be able take care of the ripple current. Suggestions make me target two or three \qty{10}{\micro\farad} capacitors in 0805 package.
+$I_{CIN}=I_{CHG} \times \sqrt{D \times (1 - D)}$
+
+$I_{COUT} = \frac{I_{RIPPLE}}{2 \times \sqrt{3}} \approx 0.29 \times I_{RIPPLE}$
+
+$\Delta V_O = \frac{V_{OUT}}{8LCfs^2} \left( 1 - \frac{V_{OUT}}{V_{IN}} \right)$
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{bq25601-typical-application}
+    \caption{BQ25601 typical application, section 10.2 in the datasheet. \cite{bq25601-datasheet}}
+    \label{fig:bq25601-typical-application}
+\end{figure}
+
+\begin{multicols}{2}
 
 \subsection{USB-C Sink Controller}
 FUSB303B
@@ -218,7 +280,14 @@ Datasheet \cite{w25q64jv-datasheet}
 
 \subsubsection{Antenna}
 PCB Antenna, see \autoref{sec:PCB-Antenna}.
-
+\subsection{Protection circuits}
+\subsubsection{ESD}
+\requirement{The USB-C port shall have ESD protection}
+\requirement{The battery port shall have ESD protection unless it affects leakage too much.}
+\subsubsection{Reverse polarity}
+\requirement{Ensure keyed connector for battery.}
+\subsubsection{Over current}
+\requirement{There shall be some sort of fuse for the battery.}
 
 \subsection{Layout considerations}
 In the following sections most layout related decisions will be clarified.
